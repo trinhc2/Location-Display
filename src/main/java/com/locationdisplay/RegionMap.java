@@ -33,7 +33,6 @@ public class RegionMap {
     // Get the area name for a given chunk
     public String getAreaName(Region region) {
         for (Map.Entry<String, Set<Region>> entry : areas.entrySet()) {
-            System.out.println(entry);
             if (entry.getValue().contains(region)) {
                 return entry.getKey();
             }
