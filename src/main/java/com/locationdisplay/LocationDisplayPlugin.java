@@ -22,7 +22,8 @@ import java.util.Objects;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Location Display"
+		name = "Location Display",
+		description = "Shows the name of a location upon entering"
 )
 public class LocationDisplayPlugin extends Plugin
 {
@@ -69,7 +70,7 @@ public class LocationDisplayPlugin extends Plugin
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
+			//client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
 
 		}
 	}

@@ -1,5 +1,6 @@
 package com.locationdisplay;
 
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -15,8 +16,6 @@ public class LocationDisplayOverlay extends Overlay {
     private final LocationDisplayPlugin plugin;
     private final TextComponent textComponent = new TextComponent();
     private long fadeStartTime = 0;
-    private float fadeDuration = 1000f;
-    private float holdDuration = 2000f;
     private float alpha = 0f;
     private String lastArea = "";
 
@@ -53,8 +52,8 @@ public class LocationDisplayOverlay extends Overlay {
         switch (fadeState)
         {
             case FADING_IN:
-                alpha = Math.min(1f, elapsed / fadeDuration);
-                if (elapsed >= fadeDuration)
+                alpha = Math.min(1f, (float) elapsed / config.fadeConfig());
+                if (elapsed >= config.fadeConfig())
                 {
                     fadeState = FadeState.HOLDING;
                     fadeStartTime = System.currentTimeMillis();
@@ -64,7 +63,7 @@ public class LocationDisplayOverlay extends Overlay {
 
             case HOLDING:
                 alpha = 1f;
-                if (elapsed >= holdDuration)
+                if (elapsed >= config.holdConfig())
                 {
                     fadeState = FadeState.FADING_OUT;
                     fadeStartTime = System.currentTimeMillis();
@@ -72,8 +71,8 @@ public class LocationDisplayOverlay extends Overlay {
                 break;
 
             case FADING_OUT:
-                alpha = Math.max(0f, 1f - (elapsed / fadeDuration));
-                if (elapsed >= fadeDuration)
+                alpha = Math.max(0f, 1f - ((float) elapsed / config.fadeConfig()));
+                if (elapsed >= config.fadeConfig())
                 {
                     fadeState = FadeState.IDLE;
                     alpha = 0f;
@@ -81,10 +80,13 @@ public class LocationDisplayOverlay extends Overlay {
                 break;
         }
 
+        Font font = FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSizeConfig());
+        textComponent.setFont(font);
         Color fadeColor = new Color(1f, 1f, 1f, alpha);
         textComponent.setColor(fadeColor);
-        textComponent.setPosition(new Point(50, 50));
+        textComponent.setPosition(new Point(config.textPositionConfig().width, config.textPositionConfig().height));
         textComponent.setText(currentArea);
+
 
         // Included because runelite doesn't render 0 alpha completely, 0 alpha will still leave text
         Composite originalComposite = graphics.getComposite();
