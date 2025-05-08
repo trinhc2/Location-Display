@@ -84,9 +84,15 @@ public class LocationDisplayOverlay extends Overlay {
         textComponent.setFont(font);
         Color fadeColor = new Color(1f, 1f, 1f, alpha);
         textComponent.setColor(fadeColor);
-        textComponent.setPosition(new Point(config.textPositionConfig().width, config.textPositionConfig().height));
+        if (client.isResized()) {
+            textComponent.setPosition(new Point(config.textPositionConfig().width, config.textPositionConfig().height));
+        }
+        else {
+            //if not resized, top center offset is directly in middle so have to adjust by string width
+            int stringWidth = graphics.getFontMetrics(font).stringWidth(lastArea) / 2;
+            textComponent.setPosition(new Point(config.textPositionConfig().width - stringWidth, config.textPositionConfig().height));
+        }
         textComponent.setText(currentArea);
-
 
         // Included because runelite doesn't render 0 alpha completely, 0 alpha will still leave text
         Composite originalComposite = graphics.getComposite();
