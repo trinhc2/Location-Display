@@ -38,6 +38,7 @@ public class LocationDisplayOverlay extends Overlay {
 
         if (!currentArea.equals(lastArea)) {
             fadeStartTime = System.currentTimeMillis();
+            //add check for empty area name -> if not empty then fade
             fadeState = FadeState.FADING_IN;
             lastArea = currentArea;
         }

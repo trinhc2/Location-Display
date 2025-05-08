@@ -32,6 +32,7 @@ public class Region {
         return x == region.x && y == region.y;
     }
 
+    //needed this to perform equality check
     @Override
     public int hashCode() {
         return Objects.hash(x, y);

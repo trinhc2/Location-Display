@@ -1,42 +1,55 @@
 package com.locationdisplay;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
+import javax.inject.Inject;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class RegionMap {
 
-    public Map<String, Set<Region>> areas;
+    @Inject
+    private Gson gson;
+
+    public Map<Region, String> regionToArea = new HashMap<>();
 
     public RegionMap() {
-        areas = new HashMap<>();
-
-        // Hardcode the dictionary of areas and their chunks
-        FillMap();
+        loadFromJson();
     }
 
-    private void FillMap() {
-        Set<Region> lumbridgeRegions = new HashSet<>(Arrays.asList(
-                new Region(50,50),
-                new Region(50,53)
-        ));
-        areas.put("Lumbridge", lumbridgeRegions);
-
-        Set<Region> draynorRegions = new HashSet<>(Arrays.asList(
-                new Region(48,51),
-                new Region(48,50),
-                new Region(49,50),
-                new Region(49,53)
-        ));
-
-        areas.put("Draynor", draynorRegions);
-    }
-
-    // Get the area name for a given chunk
-    public String getAreaName(Region region) {
-        for (Map.Entry<String, Set<Region>> entry : areas.entrySet()) {
-            if (entry.getValue().contains(region)) {
-                return entry.getKey();
+    private void loadFromJson() {
+        System.out.println("load called");
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream("Locations.json");
+            if (is == null) {
+                throw new FileNotFoundException("Could not find Locations.json in resources folder.");
             }
+
+            Reader reader = new InputStreamReader(is);
+
+            Type mapType = new TypeToken<Map<String, List<List<Integer>>>>() {}.getType();
+            Map<String, List<List<Integer>>> areaData = gson.fromJson(reader, mapType);
+
+            for (Map.Entry<String, List<List<Integer>>> entry : areaData.entrySet()) {
+                String areaName = entry.getKey();
+                List<List<Integer>> coordsList = entry.getValue();
+                System.out.println(areaName);
+
+                for (List<Integer> coords : coordsList) {
+                    int x = coords.get(0);
+                    int y = coords.get(1);
+                    Region region = new Region(x, y);
+                    regionToArea.put(region, areaName);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return "Unknown Area"; // Default if chunk is not found
+    }
+
+    public String getAreaName(Region region) {
+        return regionToArea.getOrDefault(region, "Unknown Area");
     }
 }
