@@ -18,7 +18,7 @@ public class LocationDisplayOverlay extends Overlay {
     private long fadeStartTime = 0;
     private float alpha = 0f;
     private String lastArea = "";
-
+    private boolean suppressNextArea;
     private enum FadeState { IDLE, FADING_IN, HOLDING, FADING_OUT }
     private FadeState fadeState = FadeState.IDLE;
 
@@ -29,6 +29,7 @@ public class LocationDisplayOverlay extends Overlay {
         this.client = client;
         this.plugin = plugin;
         this.config = config;
+        this.suppressNextArea = config.suppressOnLoginConfig();
     }
 
     @Override
@@ -42,8 +43,9 @@ public class LocationDisplayOverlay extends Overlay {
         }
 
         // Skip everything if not fading
-        if (fadeState == FadeState.IDLE)
+        if (fadeState == FadeState.IDLE || suppressNextArea)
         {
+            suppressNextArea = false;
             return null;
         }
 

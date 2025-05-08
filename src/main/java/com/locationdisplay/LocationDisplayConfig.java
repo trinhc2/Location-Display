@@ -43,4 +43,12 @@ public interface LocationDisplayConfig extends Config
 			description = "Sets the font size"
 	)
 	default int fontSizeConfig() { return 32; }
+
+	@ConfigItem(
+			position = 5,
+			keyName = "suppressOnLoginConfig",
+			name = "Suppress on login",
+			description = "Prevents location name from showing immediately after login"
+	)
+	default boolean suppressOnLoginConfig() { return false; }
 }
