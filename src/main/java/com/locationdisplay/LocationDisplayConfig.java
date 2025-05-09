@@ -3,52 +3,47 @@ package com.locationdisplay;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
-
-import java.awt.*;
 
 @ConfigGroup("example")
 public interface LocationDisplayConfig extends Config
 {
 	@ConfigItem(
 			position = 1,
-			keyName = "textPositionConfig",
-			name = "Text Position",
-			description = "Set position of text overlay"
+			keyName = "textHeight",
+			name = "Text Height",
+			description = "Set the height of text overlay"
 	)
-	@Range(min = -200)
-	default Dimension textPositionConfig() { return new Dimension(0, 60);
-	}
+	default int textHeight() { return 60;}
 
 	@ConfigItem(
 			position = 2,
-			keyName = "fadeConfig",
+			keyName = "fadeDuration",
 			name = "Fade Duration (ms)",
 			description = "Sets the duration of fading in/fading out in milliseconds"
 	)
-	default int fadeConfig() { return 1000; }
+	default int fadeDuration() { return 1000; }
 
 	@ConfigItem(
 			position = 3,
-			keyName = "fadeConfig",
+			keyName = "holdDuration",
 			name = "Hold Duration (ms)",
 			description = "Sets the duration of holding after fading in in milliseconds"
 	)
-	default int holdConfig() { return 2000; }
+	default int holdDuration() { return 2000; }
 
 	@ConfigItem(
 			position = 4,
-			keyName = "fontSizeConfig",
+			keyName = "fontSize",
 			name = "Font Size",
 			description = "Sets the font size"
 	)
-	default int fontSizeConfig() { return 32; }
+	default int fontSize() { return 32; }
 
 	@ConfigItem(
 			position = 5,
-			keyName = "suppressOnLoginConfig",
+			keyName = "suppressOnLogin",
 			name = "Suppress on login",
 			description = "Prevents location name from showing immediately after login"
 	)
-	default boolean suppressOnLoginConfig() { return false; }
+	default boolean suppressOnLogin() { return false; }
 }

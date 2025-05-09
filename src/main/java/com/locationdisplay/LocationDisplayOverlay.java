@@ -29,7 +29,7 @@ public class LocationDisplayOverlay extends Overlay {
         this.client = client;
         this.plugin = plugin;
         this.config = config;
-        this.suppressNextArea = config.suppressOnLoginConfig();
+        this.suppressNextArea = config.suppressOnLogin();
     }
 
     @Override
@@ -37,10 +37,11 @@ public class LocationDisplayOverlay extends Overlay {
         String currentArea = plugin.getLastArea();
 
         if (!currentArea.equals(lastArea)) {
-            fadeStartTime = System.currentTimeMillis();
-            //TODO add check for empty area name -> if not empty then fade
-            fadeState = FadeState.FADING_IN;
             lastArea = currentArea;
+            if (!lastArea.equals("Unknown Area")) {
+                fadeStartTime = System.currentTimeMillis();
+                fadeState = FadeState.FADING_IN;
+            }
         }
 
         // Skip everything if not fading
@@ -55,8 +56,8 @@ public class LocationDisplayOverlay extends Overlay {
         switch (fadeState)
         {
             case FADING_IN:
-                alpha = Math.min(1f, (float) elapsed / config.fadeConfig());
-                if (elapsed >= config.fadeConfig())
+                alpha = Math.min(1f, (float) elapsed / config.fadeDuration());
+                if (elapsed >= config.fadeDuration())
                 {
                     fadeState = FadeState.HOLDING;
                     fadeStartTime = System.currentTimeMillis();
@@ -66,7 +67,7 @@ public class LocationDisplayOverlay extends Overlay {
 
             case HOLDING:
                 alpha = 1f;
-                if (elapsed >= config.holdConfig())
+                if (elapsed >= config.holdDuration())
                 {
                     fadeState = FadeState.FADING_OUT;
                     fadeStartTime = System.currentTimeMillis();
@@ -74,8 +75,8 @@ public class LocationDisplayOverlay extends Overlay {
                 break;
 
             case FADING_OUT:
-                alpha = Math.max(0f, 1f - ((float) elapsed / config.fadeConfig()));
-                if (elapsed >= config.fadeConfig())
+                alpha = Math.max(0f, 1f - ((float) elapsed / config.fadeDuration()));
+                if (elapsed >= config.fadeDuration())
                 {
                     fadeState = FadeState.IDLE;
                     alpha = 0f;
@@ -83,17 +84,18 @@ public class LocationDisplayOverlay extends Overlay {
                 break;
         }
 
-        Font font = FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSizeConfig());
+        //Setting text component properties
+        Font font = FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSize());
         textComponent.setFont(font);
         Color fadeColor = new Color(1f, 1f, 1f, alpha);
         textComponent.setColor(fadeColor);
         if (client.isResized()) {
-            textComponent.setPosition(new Point(config.textPositionConfig().width, config.textPositionConfig().height));
+            textComponent.setPosition(new Point(0, config.textHeight()));
         }
         else {
             //if not resized, top center offset is directly in middle so have to adjust by string width
             int stringWidth = graphics.getFontMetrics(font).stringWidth(lastArea) / 2;
-            textComponent.setPosition(new Point(config.textPositionConfig().width - stringWidth, config.textPositionConfig().height));
+            textComponent.setPosition(new Point(-stringWidth, config.textHeight()));
         }
         textComponent.setText(currentArea);
 

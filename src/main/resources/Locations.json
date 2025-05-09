@@ -1,7 +1,27 @@
 {
+  "Air Altar": [[44,75]],
   "Barbarian Village": [[48, 53]],
-  "Lumbridge": [[50, 50], [50, 53]],
+  "Body Altar": [[39,75]],
+  "Chaos Altar": [35,75],
+  "Cosmic Altar": [[33,75]],
+  "Death Altar": [[34,75]],
   "Draynor Village": [[48,50], [48, 51]],
-  "Varrock": [[49,54], [50,54], [49,53]]
+  "Draynor Manor": [[48,52]],
+  "Digsite": [[52,53]],
+  "Dorgesh-Kaan": [[42,83], [42,82]],
+  "Earth Altar": [[41,75]],
+  "Edgeville": [[48,54]],
+  "Fire Altar": [[40,75]],
+  "Grand Exchange": [[49,54]],
+  "Law Altar": [[38,75]],
+  "Lumbridge": [[50, 50]],
+  "Lumbridge Swamp": [[49,49], [49,50]],
+  "Mind Altar": [[43,75]],
+  "Nature Altar": [[37,75]],
+  "Stronghold of Security": [[28,81], [31,81], [33,82], [36,81]],
+  "Water Altar": [[42,75]],
+  "Wizards' Tower": [[48,49]],
+  "Wrath Altar": [[36,75]],
+  "Varrock": [[50,54], [49,53],[50,53]]
 }
 

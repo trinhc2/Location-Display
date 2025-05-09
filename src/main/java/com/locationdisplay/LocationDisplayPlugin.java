@@ -6,11 +6,8 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -68,19 +65,10 @@ public class LocationDisplayPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			//client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
-
-		}
-	}
-
-	@Subscribe
 	public void onGameTick(GameTick gameTick) {
 		playerPosition = client.getLocalPlayer().getWorldLocation();
 
+		//converting RegionID to region coordinates
 		int currentX = playerPosition.getRegionID() >> 8;
 		int currentY = playerPosition.getRegionID() & 0xFF;
 
@@ -91,8 +79,6 @@ public class LocationDisplayPlugin extends Plugin
 
 			if (!Objects.equals(currentArea, lastArea)) {
 				lastArea = currentArea;
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", lastArea, null);
-
 			}
 		}
 
