@@ -51,12 +51,14 @@ public class LocationDisplayPlugin extends Plugin
 	@Setter
 	private Region playerRegion = new Region(-1, -1);
 
-	private final RegionMap regionMap = new RegionMap();
+	@Inject
+	private RegionMap regionMap;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		regionMap.loadFromJson();
 	}
 
 	@Override

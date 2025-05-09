@@ -15,11 +15,7 @@ public class RegionMap {
 
     public Map<Region, String> regionToArea = new HashMap<>();
 
-    public RegionMap() {
-        loadFromJson();
-    }
-
-    private void loadFromJson() {
+    public void loadFromJson() {
         System.out.println("load called");
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream("Locations.json");

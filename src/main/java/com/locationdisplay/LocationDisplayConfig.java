@@ -17,7 +17,7 @@ public interface LocationDisplayConfig extends Config
 			description = "Set position of text overlay"
 	)
 	@Range(min = -200)
-	default Dimension textPositionConfig() { return new Dimension(0, 50);
+	default Dimension textPositionConfig() { return new Dimension(0, 60);
 	}
 
 	@ConfigItem(
