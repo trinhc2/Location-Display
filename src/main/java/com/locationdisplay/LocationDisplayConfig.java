@@ -11,7 +11,7 @@ public interface LocationDisplayConfig extends Config
 			position = 1,
 			keyName = "textHeight",
 			name = "Text Height",
-			description = "Set the height of text overlay"
+			description = "Set the height of text overlay, higher number = lower on screen"
 	)
 	default int textHeight() { return 60;}
 
@@ -41,6 +41,28 @@ public interface LocationDisplayConfig extends Config
 
 	@ConfigItem(
 			position = 5,
+			keyName = "outline",
+			name = "Outline",
+			description = "Outlines the text"
+	)
+	default boolean outline() { return false; }
+
+	enum FontEnum {
+		Small,
+		Regular,
+		Bold
+	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "Font",
+			name = "Font Style",
+			description = "Select font style"
+	)
+	default FontEnum font() { return FontEnum.Bold; }
+
+	@ConfigItem(
+			position = 7,
 			keyName = "suppressOnLogin",
 			name = "Suppress on login",
 			description = "Prevents location name from showing immediately after login"

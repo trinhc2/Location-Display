@@ -85,10 +85,27 @@ public class LocationDisplayOverlay extends Overlay {
         }
 
         //Setting text component properties
-        Font font = FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSize());
+        Font font;
+        switch (config.font()) {
+            case Regular:
+                font = FontManager.getRunescapeFont().deriveFont((float) config.fontSize());
+                break;
+            case Bold:
+                font = FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSize());
+                break;
+            case Small:
+                font = FontManager.getRunescapeSmallFont().deriveFont((float) config.fontSize());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + config.font());
+        }
         textComponent.setFont(font);
+
+        textComponent.setOutline(config.outline());
+
         Color fadeColor = new Color(1f, 1f, 1f, alpha);
         textComponent.setColor(fadeColor);
+
         if (client.isResized()) {
             textComponent.setPosition(new Point(0, config.textHeight()));
         }
@@ -97,6 +114,7 @@ public class LocationDisplayOverlay extends Overlay {
             int stringWidth = graphics.getFontMetrics(font).stringWidth(lastArea) / 2;
             textComponent.setPosition(new Point(-stringWidth, config.textHeight()));
         }
+
         textComponent.setText(currentArea);
 
         // Included because runelite doesn't render 0 alpha completely, 0 alpha will still leave text
