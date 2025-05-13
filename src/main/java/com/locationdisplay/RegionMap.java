@@ -16,7 +16,6 @@ public class RegionMap {
     public Map<Region, String> regionToArea = new HashMap<>();
 
     public void loadFromJson() {
-        System.out.println("load called");
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream("Locations.json");
             if (is == null) {
@@ -31,7 +30,6 @@ public class RegionMap {
             for (Map.Entry<String, List<List<Integer>>> entry : areaData.entrySet()) {
                 String areaName = entry.getKey();
                 List<List<Integer>> coordsList = entry.getValue();
-                System.out.println(areaName);
 
                 for (List<Integer> coords : coordsList) {
                     int x = coords.get(0);

@@ -5,5 +5,4 @@ Not every area is included, currently using the [wiki locations](https://oldscho
 
 Feel free to help out by editing the resources/Locations.json file.
 
-
-Note: This plugin is based on the [Runescape Region Grid](https://mejrs.github.io/osrs) therefore, some areas may not be 100% accurate.
+Note: This plugin is based on the [Runescape Region Grid](https://mejrs.github.io/osrs) therefore, some areas may not be 100% accurate. Big thanks to mejrs.
