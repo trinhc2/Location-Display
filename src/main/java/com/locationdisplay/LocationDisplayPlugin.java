@@ -38,7 +38,7 @@ public class LocationDisplayPlugin extends Plugin
 
 	@Getter
 	@Setter
-	private WorldPoint playerPosition = new WorldPoint(0,0,0);;
+	private WorldPoint playerPosition = new WorldPoint(0,0,0);
 
 	@Getter
 	@Setter
@@ -62,17 +62,15 @@ public class LocationDisplayPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		regionMap.clear();
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick) {
-		playerPosition = client.getLocalPlayer().getWorldLocation();
-
-		//converting RegionID to region coordinates
+	private void updatePlayerRegion(WorldPoint playerPosition) {
 		int currentX = playerPosition.getRegionID() >> 8;
 		int currentY = playerPosition.getRegionID() & 0xFF;
 
 		if (playerPosition.getRegionX() != currentX || playerPosition.getRegionY() != currentY) {
+			log.debug("Player region changed: X = {}, Y = {}", currentX, currentY);
 			playerRegion.setX(currentX);
 			playerRegion.setY(currentY);
 			String currentArea = regionMap.getAreaName(playerRegion);
@@ -81,6 +79,12 @@ public class LocationDisplayPlugin extends Plugin
 				lastArea = currentArea;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick) {
+		playerPosition = client.getLocalPlayer().getWorldLocation();
+		updatePlayerRegion(playerPosition);
 
 	}
 

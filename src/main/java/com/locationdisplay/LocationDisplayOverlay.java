@@ -18,7 +18,7 @@ public class LocationDisplayOverlay extends Overlay {
     private long fadeStartTime = 0;
     private float alpha = 0f;
     private String lastArea = "";
-    private boolean suppressNextArea;
+    private boolean suppressFirstLocation;
     private enum FadeState { IDLE, FADING_IN, HOLDING, FADING_OUT }
     private FadeState fadeState = FadeState.IDLE;
 
@@ -29,7 +29,20 @@ public class LocationDisplayOverlay extends Overlay {
         this.client = client;
         this.plugin = plugin;
         this.config = config;
-        this.suppressNextArea = config.suppressOnLogin();
+        this.suppressFirstLocation = config.suppressOnLogin();
+    }
+
+    private Font getFontFromConfig() {
+        switch (config.font()) {
+            case Regular:
+                return FontManager.getRunescapeFont().deriveFont((float) config.fontSize());
+            case Bold:
+                return FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSize());
+            case Small:
+                return FontManager.getRunescapeSmallFont().deriveFont((float) config.fontSize());
+            default:
+                throw new IllegalStateException("Unexpected value: " + config.font());
+        }
     }
 
     @Override
@@ -45,9 +58,9 @@ public class LocationDisplayOverlay extends Overlay {
         }
 
         // Skip everything if not fading
-        if (fadeState == FadeState.IDLE || suppressNextArea)
+        if (fadeState == FadeState.IDLE || suppressFirstLocation)
         {
-            suppressNextArea = false;
+            suppressFirstLocation = false;
             return null;
         }
 
@@ -84,21 +97,7 @@ public class LocationDisplayOverlay extends Overlay {
                 break;
         }
 
-        //Setting text component properties
-        Font font;
-        switch (config.font()) {
-            case Regular:
-                font = FontManager.getRunescapeFont().deriveFont((float) config.fontSize());
-                break;
-            case Bold:
-                font = FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSize());
-                break;
-            case Small:
-                font = FontManager.getRunescapeSmallFont().deriveFont((float) config.fontSize());
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + config.font());
-        }
+        Font font = getFontFromConfig();
         textComponent.setFont(font);
 
         textComponent.setOutline(config.outline());

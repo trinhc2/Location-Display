@@ -326,6 +326,7 @@
   "Twilight Temple": [[26,50]],
   "The Darkfrost": [[23,51]],
   "The Forgotten Cemetary": [[46,58]],
+  "The Gauntlet": [[47,95], [29,88], [30,88]],
   "The Inferno": [[35,83]],
   "The Maiden of Sugadinti": [[49,60]],
   "The Nexus": [[55,80]],
@@ -388,8 +389,6 @@
   "Zalcano": [[47,94]],
   "Zebak": [[61,84]],
   "Zemouregal's Base": [[55,71], [56,71]],
-  "Zul-Andra": [[34,47]],
-  "Home": [[28,89], [30,89], [31,89]],
-  "Corrupted Gauntlet": [[30,88]]
+  "Zul-Andra": [[34,47]]
 }
 
