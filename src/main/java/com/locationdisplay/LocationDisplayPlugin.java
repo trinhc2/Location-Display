@@ -70,7 +70,7 @@ public class LocationDisplayPlugin extends Plugin
 		int currentY = playerPosition.getRegionID() & 0xFF;
 
 		if (playerPosition.getRegionX() != currentX || playerPosition.getRegionY() != currentY) {
-			log.debug("Player region changed: X = {}, Y = {}", currentX, currentY);
+			//log.debug("Player region changed: X = {}, Y = {}", currentX, currentY);
 			playerRegion.setX(currentX);
 			playerRegion.setY(currentY);
 			String currentArea = regionMap.getAreaName(playerRegion);
