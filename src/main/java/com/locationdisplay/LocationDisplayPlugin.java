@@ -38,10 +38,6 @@ public class LocationDisplayPlugin extends Plugin
 
 	@Getter
 	@Setter
-	private WorldPoint playerPosition = new WorldPoint(0,0,0);
-
-	@Getter
-	@Setter
 	private String lastArea = "";
 
 	@Getter
@@ -69,12 +65,12 @@ public class LocationDisplayPlugin extends Plugin
 		int currentX = playerPosition.getRegionID() >> 8;
 		int currentY = playerPosition.getRegionID() & 0xFF;
 
-		if (playerPosition.getRegionX() != currentX || playerPosition.getRegionY() != currentY) {
-			//log.debug("Player region changed: X = {}, Y = {}", currentX, currentY);
+		if (playerRegion.getX() != currentX || playerRegion.getY() != currentY) {
 			playerRegion.setX(currentX);
 			playerRegion.setY(currentY);
 			String currentArea = regionMap.getAreaName(playerRegion);
 
+			log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
 			if (!Objects.equals(currentArea, lastArea)) {
 				lastArea = currentArea;
 			}
@@ -83,9 +79,8 @@ public class LocationDisplayPlugin extends Plugin
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick) {
-		playerPosition = client.getLocalPlayer().getWorldLocation();
+		WorldPoint playerPosition = client.getLocalPlayer().getWorldLocation();
 		updatePlayerRegion(playerPosition);
-
 	}
 
 	@Provides
