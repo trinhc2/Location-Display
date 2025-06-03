@@ -24,8 +24,6 @@ public class LocationDisplayOverlay extends Overlay {
 
     @Inject
     private LocationDisplayOverlay(Client client, LocationDisplayPlugin plugin, LocationDisplayConfig config) {
-
-        setPosition(OverlayPosition.TOP_CENTER);
         this.client = client;
         this.plugin = plugin;
         this.config = config;
@@ -42,6 +40,39 @@ public class LocationDisplayOverlay extends Overlay {
                 return FontManager.getRunescapeSmallFont().deriveFont((float) config.fontSize());
             default:
                 throw new IllegalStateException("Unexpected value: " + config.font());
+        }
+    }
+
+    private OverlayPosition getPositionFromConfig() {
+        switch (config.position()) {
+            case TOP_LEFT:
+                return OverlayPosition.TOP_LEFT;
+            case TOP_RIGHT:
+                return OverlayPosition.TOP_RIGHT;
+            case TOP_CENTER:
+                return OverlayPosition.TOP_CENTER;
+            case BOTTOM_LEFT:
+                return OverlayPosition.BOTTOM_LEFT;
+            case BOTTOM_RIGHT:
+                return OverlayPosition.BOTTOM_RIGHT;
+            default:
+                throw new IllegalStateException("Unexpected value: " + config.position());
+        }
+    }
+
+    private Point calculateTextPosition(Graphics2D graphics, Font font) {
+        int y = config.textHeight();
+        int stringWidth = graphics.getFontMetrics(font).stringWidth(lastArea);
+        OverlayPosition position = getPositionFromConfig();
+
+        switch (position) {
+            case TOP_LEFT:
+            case BOTTOM_LEFT:
+                return new Point(0,y);
+            case TOP_CENTER:
+                return new Point(-stringWidth / 2,y);
+            default:
+                return new Point(-stringWidth, y);
         }
     }
 
@@ -105,14 +136,8 @@ public class LocationDisplayOverlay extends Overlay {
         Color fadeColor = new Color(1f, 1f, 1f, alpha);
         textComponent.setColor(fadeColor);
 
-        if (client.isResized()) {
-            textComponent.setPosition(new Point(0, config.textHeight()));
-        }
-        else {
-            //if not resized, top center offset is directly in middle so have to adjust by string width
-            int stringWidth = graphics.getFontMetrics(font).stringWidth(lastArea) / 2;
-            textComponent.setPosition(new Point(-stringWidth, config.textHeight()));
-        }
+        setPosition(getPositionFromConfig());
+        textComponent.setPosition(calculateTextPosition(graphics, font));
 
         textComponent.setText(currentArea);
 

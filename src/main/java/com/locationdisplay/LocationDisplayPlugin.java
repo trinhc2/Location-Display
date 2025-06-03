@@ -20,7 +20,7 @@ import java.util.Objects;
 @Slf4j
 @PluginDescriptor(
 		name = "Location Display",
-		description = "Shows the name of a location upon entering"
+		description = "Displays name of the current location upon entering area"
 )
 public class LocationDisplayPlugin extends Plugin
 {
@@ -70,7 +70,7 @@ public class LocationDisplayPlugin extends Plugin
 			playerRegion.setY(currentY);
 			String currentArea = regionMap.getAreaName(playerRegion);
 
-			log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
+			//log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
 			if (!Objects.equals(currentArea, lastArea)) {
 				lastArea = currentArea;
 			}
