@@ -61,18 +61,19 @@ public class LocationDisplayOverlay extends Overlay {
     }
 
     private Point calculateTextPosition(Graphics2D graphics, Font font) {
-        int y = config.textHeight();
+        int y = config.textYOffset();
+        int x = config.textXOffset();
         int stringWidth = graphics.getFontMetrics(font).stringWidth(lastArea);
         OverlayPosition position = getPositionFromConfig();
 
         switch (position) {
             case TOP_LEFT:
             case BOTTOM_LEFT:
-                return new Point(0,y);
+                return new Point(x,y);
             case TOP_CENTER:
-                return new Point(-stringWidth / 2,y);
+                return new Point(x - (stringWidth / 2),y);
             default:
-                return new Point(-stringWidth, y);
+                return new Point(x - stringWidth, y);
         }
     }
 

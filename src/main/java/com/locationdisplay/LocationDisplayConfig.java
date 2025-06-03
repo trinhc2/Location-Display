@@ -35,15 +35,24 @@ public interface LocationDisplayConfig extends Config
 
 	@Range(min = -1000)
 	@ConfigItem(
-			position = 2,
-			keyName = "textHeight",
-			name = "Text Height",
-			description = "Set the height of text overlay, higher number = lower on screen"
+			position = 3,
+			keyName = "textYOffset",
+			name = "Text Y Offset",
+			description = "Set the Y position of text overlay, higher number = lower on screen"
 	)
-	default int textHeight() { return 60;}
+	default int textYOffset() { return 60;}
+
+	@Range(min = -1000)
+	@ConfigItem(
+			position = 2,
+			keyName = "textXOffset",
+			name = "Text X Offset",
+			description = "Set the X position of text overlay, higher number = more right on screen"
+	)
+	default int textXOffset() { return 0;}
 
 	@ConfigItem(
-			position = 3,
+			position = 4,
 			keyName = "fadeDuration",
 			name = "Fade Duration (ms)",
 			description = "Sets the duration of fading in/fading out in milliseconds"
@@ -51,7 +60,7 @@ public interface LocationDisplayConfig extends Config
 	default int fadeDuration() { return 1000; }
 
 	@ConfigItem(
-			position = 4,
+			position = 5,
 			keyName = "holdDuration",
 			name = "Hold Duration (ms)",
 			description = "Sets the duration of holding after fading in in milliseconds"
@@ -59,7 +68,7 @@ public interface LocationDisplayConfig extends Config
 	default int holdDuration() { return 2000; }
 
 	@ConfigItem(
-			position = 5,
+			position = 6,
 			keyName = "fontSize",
 			name = "Font Size",
 			description = "Sets the font size"
@@ -67,7 +76,7 @@ public interface LocationDisplayConfig extends Config
 	default int fontSize() { return 32; }
 
 	@ConfigItem(
-			position = 6,
+			position = 7,
 			keyName = "outline",
 			name = "Outline",
 			description = "Outlines the text"
@@ -81,7 +90,7 @@ public interface LocationDisplayConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
+			position = 8,
 			keyName = "Font",
 			name = "Font Style",
 			description = "Select font style"
@@ -89,7 +98,7 @@ public interface LocationDisplayConfig extends Config
 	default FontEnum font() { return FontEnum.Bold; }
 
 	@ConfigItem(
-			position = 8,
+			position = 9,
 			keyName = "suppressOnLogin",
 			name = "Suppress on login",
 			description = "Prevents location name from showing immediately after login"
