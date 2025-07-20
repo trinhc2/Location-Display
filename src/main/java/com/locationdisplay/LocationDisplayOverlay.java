@@ -134,7 +134,8 @@ public class LocationDisplayOverlay extends Overlay {
 
         textComponent.setOutline(config.outline());
 
-        Color fadeColor = new Color(1f, 1f, 1f, alpha);
+        Color baseColor = config.colorConfig();
+        Color fadeColor = new Color(baseColor.getRed() / 255f, baseColor.getGreen() / 255f, baseColor.getBlue() / 255f, alpha);
         textComponent.setColor(fadeColor);
 
         setPosition(getPositionFromConfig());

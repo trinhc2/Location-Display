@@ -1,7 +1,7 @@
 # Location Display
 The Location Display plugin displays the name of the location you are in upon entering. 391 current locations!
 
-![preview](/media/preview.gif)
+![Preview](/media/preview.gif)
 ## Help
 If you've experienced an issue with a location or have any recommendations please [create an issue](https://github.com/trinhc2/Location-Display/issues).
 

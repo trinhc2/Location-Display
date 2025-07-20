@@ -6,6 +6,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 
+import java.awt.*;
+
 @ConfigGroup("Location Text Configuration")
 public interface LocationDisplayConfig extends Config
 {
@@ -104,4 +106,12 @@ public interface LocationDisplayConfig extends Config
 			description = "Prevents location name from showing immediately after login"
 	)
 	default boolean suppressOnLogin() { return false; }
+
+	@ConfigItem(
+			position = 10,
+			keyName = "Color",
+			name = "Text Color",
+			description = "Select the color of the text"
+	)
+	default Color colorConfig() { return Color.WHITE; }
 }
