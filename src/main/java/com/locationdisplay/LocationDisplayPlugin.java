@@ -15,8 +15,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import java.util.Objects;
-
 @Slf4j
 @PluginDescriptor(
 		name = "Location Display",
@@ -38,7 +36,7 @@ public class LocationDisplayPlugin extends Plugin
 
 	@Getter
 	@Setter
-	private String lastArea = "";
+	private String currentArea = "";
 
 	@Getter
 	@Setter
@@ -68,12 +66,9 @@ public class LocationDisplayPlugin extends Plugin
 		if (playerRegion.getX() != currentX || playerRegion.getY() != currentY) {
 			playerRegion.setX(currentX);
 			playerRegion.setY(currentY);
-			String currentArea = regionMap.getAreaName(playerRegion);
+			setCurrentArea(regionMap.getAreaName(playerRegion));
 
 			//log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
-			if (!Objects.equals(currentArea, lastArea)) {
-				lastArea = currentArea;
-			}
 		}
 	}
 

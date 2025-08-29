@@ -18,6 +18,7 @@ public class LocationDisplayOverlay extends Overlay {
     private long fadeStartTime = 0;
     private float alpha = 0f;
     private String lastArea = "";
+    private String displayedArea = null;
     private boolean suppressFirstLocation;
     private enum FadeState { IDLE, FADING_IN, HOLDING, FADING_OUT }
     private FadeState fadeState = FadeState.IDLE;
@@ -60,10 +61,10 @@ public class LocationDisplayOverlay extends Overlay {
         }
     }
 
-    private Point calculateTextPosition(Graphics2D graphics, Font font) {
+    private Point calculateTextPosition(Graphics2D graphics, Font font, String text) {
         int y = config.textYOffset();
         int x = config.textXOffset();
-        int stringWidth = graphics.getFontMetrics(font).stringWidth(lastArea);
+        int stringWidth = graphics.getFontMetrics(font).stringWidth(text);
         OverlayPosition position = getPositionFromConfig();
 
         switch (position) {
@@ -79,18 +80,19 @@ public class LocationDisplayOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
-        String currentArea = plugin.getLastArea();
+        String currentArea = plugin.getCurrentArea();
 
         if (!currentArea.equals(lastArea)) {
             lastArea = currentArea;
             if (!lastArea.equals("Unknown Area")) {
+                displayedArea = lastArea;
                 fadeStartTime = System.currentTimeMillis();
                 fadeState = FadeState.FADING_IN;
             }
         }
 
         // Skip everything if not fading
-        if (fadeState == FadeState.IDLE || suppressFirstLocation)
+        if (fadeState == FadeState.IDLE || suppressFirstLocation || displayedArea == null)
         {
             suppressFirstLocation = false;
             return null;
@@ -139,9 +141,9 @@ public class LocationDisplayOverlay extends Overlay {
         textComponent.setColor(fadeColor);
 
         setPosition(getPositionFromConfig());
-        textComponent.setPosition(calculateTextPosition(graphics, font));
+        textComponent.setPosition(calculateTextPosition(graphics, font, displayedArea));
 
-        textComponent.setText(currentArea);
+        textComponent.setText(displayedArea);
 
         // Included because runelite doesn't render 0 alpha completely, 0 alpha will still leave text
         Composite originalComposite = graphics.getComposite();
