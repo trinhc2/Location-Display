@@ -22,6 +22,9 @@ public class LocationDisplayOverlay extends Overlay {
     private boolean suppressFirstLocation;
     private enum FadeState { IDLE, FADING_IN, HOLDING, FADING_OUT }
     private FadeState fadeState = FadeState.IDLE;
+    private static final long SOUND_COOLDOWN_MS = 5000; // 5 seconds cooldown
+    private long lastSoundTime = 0;
+
 
     @Inject
     private LocationDisplayOverlay(Client client, LocationDisplayPlugin plugin, LocationDisplayConfig config) {
@@ -115,6 +118,15 @@ public class LocationDisplayOverlay extends Overlay {
                 displayedArea = config.prefixSuffix() + lastArea + suffix;
                 fadeStartTime = System.currentTimeMillis();
                 fadeState = FadeState.FADING_IN;
+
+                if (config.soundEffect()){
+                    long currentTime = System.currentTimeMillis();
+
+                    if (currentTime - lastSoundTime >= SOUND_COOLDOWN_MS) {
+                        client.playSoundEffect(config.soundEffectID());
+                        lastSoundTime = currentTime;
+                    }
+                }
             }
         }
 
