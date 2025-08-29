@@ -32,16 +32,28 @@ public class LocationDisplayOverlay extends Overlay {
     }
 
     private Font getFontFromConfig() {
+        Font baseFont;
+
         switch (config.font()) {
             case Regular:
-                return FontManager.getRunescapeFont().deriveFont((float) config.fontSize());
+                baseFont = FontManager.getRunescapeFont();
+                break;
             case Bold:
-                return FontManager.getRunescapeBoldFont().deriveFont((float) config.fontSize());
+                baseFont = FontManager.getRunescapeBoldFont();
+                break;
             case Small:
-                return FontManager.getRunescapeSmallFont().deriveFont((float) config.fontSize());
+                baseFont = FontManager.getRunescapeSmallFont();
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + config.font());
         }
+
+        int style = baseFont.getStyle();
+        if (config.italic()) {
+            style |= Font.ITALIC;
+        }
+
+        return baseFont.deriveFont(style, (float) config.fontSize());
     }
 
     private OverlayPosition getPositionFromConfig() {

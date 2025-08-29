@@ -147,4 +147,12 @@ public interface LocationDisplayConfig extends Config
 			description = "Adjust height of underline"
 	)
 	default int underlineHeight() { return -2; }
+
+	@ConfigItem(
+			position = 25,
+			keyName = "italic",
+			name = "Italic",
+			description = "Adds italic to font"
+	)
+	default boolean italic() { return false; }
 }
