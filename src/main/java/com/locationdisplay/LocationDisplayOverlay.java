@@ -78,6 +78,20 @@ public class LocationDisplayOverlay extends Overlay {
         }
     }
 
+    private void drawUnderline(Graphics2D graphics, Font font, Color fadeColor, Point position){
+        FontMetrics metrics = graphics.getFontMetrics(font);
+        int textWidth = metrics.stringWidth(displayedArea);
+
+        graphics.setColor(fadeColor);
+
+        Stroke originalStroke = graphics.getStroke();
+        graphics.setStroke(new BasicStroke((float) config.underlineThickness()));
+
+        graphics.drawLine(position.x - config.underlineWidth(), position.y + config.underlineHeight(), position.x + textWidth + config.underlineWidth(), position.y + config.underlineHeight());
+
+        graphics.setStroke(originalStroke);
+    }
+
     @Override
     public Dimension render(Graphics2D graphics) {
         String currentArea = plugin.getCurrentArea();
@@ -141,9 +155,15 @@ public class LocationDisplayOverlay extends Overlay {
         textComponent.setColor(fadeColor);
 
         setPosition(getPositionFromConfig());
-        textComponent.setPosition(calculateTextPosition(graphics, font, displayedArea));
+
+        Point textPosition = calculateTextPosition(graphics, font, displayedArea);
+        textComponent.setPosition(textPosition);
 
         textComponent.setText(displayedArea);
+
+        if (config.underline()){
+            drawUnderline(graphics, font, fadeColor, textPosition);
+        }
 
         // Included because runelite doesn't render 0 alpha completely, 0 alpha will still leave text
         Composite originalComposite = graphics.getComposite();

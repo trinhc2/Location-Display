@@ -102,7 +102,7 @@ public interface LocationDisplayConfig extends Config
 	@ConfigItem(
 			position = 9,
 			keyName = "suppressOnLogin",
-			name = "Suppress on login",
+			name = "Suppress on Login",
 			description = "Prevents location name from showing immediately after login"
 	)
 	default boolean suppressOnLogin() { return false; }
@@ -114,4 +114,37 @@ public interface LocationDisplayConfig extends Config
 			description = "Select the color of the text"
 	)
 	default Color colorConfig() { return Color.WHITE; }
+
+	@ConfigItem(
+			position = 15,
+			keyName = "underline",
+			name = "Underline",
+			description = "Underlines the text"
+	)
+	default boolean underline() { return false; }
+
+	@ConfigItem(
+			position = 16,
+			keyName = "underlineThickness",
+			name = "Underline Thickness",
+			description = "Sets the underline thickness"
+	)
+	default int underlineThickness() { return 2; }
+
+	@ConfigItem(
+			position = 17,
+			keyName = "underlineWidth",
+			name = "Underline Width",
+			description = "Adds additional width to underline"
+	)
+	default int underlineWidth() { return 5; }
+
+	@Range(min = -1000)
+	@ConfigItem(
+			position = 18,
+			keyName = "underlineHeight",
+			name = "Underline Height",
+			description = "Adjust height of underline"
+	)
+	default int underlineHeight() { return -2; }
 }
