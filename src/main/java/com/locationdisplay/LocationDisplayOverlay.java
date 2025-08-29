@@ -111,7 +111,8 @@ public class LocationDisplayOverlay extends Overlay {
         if (!currentArea.equals(lastArea)) {
             lastArea = currentArea;
             if (!lastArea.equals("Unknown Area")) {
-                displayedArea = lastArea;
+                String suffix = new StringBuilder(config.prefixSuffix()).reverse().toString();
+                displayedArea = config.prefixSuffix() + lastArea + suffix;
                 fadeStartTime = System.currentTimeMillis();
                 fadeState = FadeState.FADING_IN;
             }

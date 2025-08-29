@@ -155,4 +155,13 @@ public interface LocationDisplayConfig extends Config
 			description = "Adds italic to font"
 	)
 	default boolean italic() { return false; }
+
+	@ConfigItem(
+			position = 30,
+			keyName = "Prefix/Suffix",
+			name = "Prefix/Suffix",
+			description = "Adds a prefix and suffix to the name"
+	)
+	default String prefixSuffix() { return ""; }
+
 }
