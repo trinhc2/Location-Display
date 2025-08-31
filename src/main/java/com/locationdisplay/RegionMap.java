@@ -1,12 +1,10 @@
 package com.locationdisplay;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.*;
 
 @Slf4j
@@ -17,6 +15,8 @@ public class RegionMap {
 
     public Map<Region, String> regionToArea = new HashMap<>();
 
+	private static class AreaData extends HashMap<String, List<List<Integer>>> {}
+
     public void loadFromJson() throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("Locations.json")) {
             if (is == null) {
@@ -24,9 +24,7 @@ public class RegionMap {
             }
 
             try (Reader reader = new InputStreamReader(is)) {
-                Type mapType = new TypeToken<Map<String, List<List<Integer>>>>() {}.getType();
-                Map<String, List<List<Integer>>> areaData = gson.fromJson(reader, mapType);
-
+                AreaData areaData = gson.fromJson(reader, AreaData.class);
                 for (Map.Entry<String, List<List<Integer>>> entry : areaData.entrySet()) {
                     String areaName = entry.getKey();
                     for (List<Integer> coords : entry.getValue()) {
