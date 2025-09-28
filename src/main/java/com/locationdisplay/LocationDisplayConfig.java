@@ -123,7 +123,7 @@ public interface LocationDisplayConfig extends Config
 			position = 1,
 			keyName = "Font",
 			name = "Font Name",
-			description = "Select font name",
+			description = "Select font name, leave empty for runescape font",
 			section = fontSettings
 	)
 	default String font() { return ""; }
