@@ -121,7 +121,7 @@ public interface LocationDisplayConfig extends Config
 
 	@ConfigItem(
 			position = 1,
-			keyName = "Font",
+			keyName = "FontName",
 			name = "Font Name",
 			description = "Select font name, leave empty for runescape font",
 			section = fontSettings
