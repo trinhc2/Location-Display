@@ -64,6 +64,14 @@ public interface LocationDisplayConfig extends Config
 	)
 	String soundEffectSettings = "soundEffectSettings";
 
+	@ConfigSection(
+			name = "Prefix/Suffix Settings",
+			description = "Settings relating to prefix/suffix",
+			position = 14,
+			closedByDefault = true
+	)
+	String prefixSuffixSettings = "prefixSuffixSettings";
+
 	@ConfigItem(
 			position = 1,
 			keyName = "position",
@@ -112,7 +120,16 @@ public interface LocationDisplayConfig extends Config
 	default int holdDuration() { return 2000; }
 
 	@ConfigItem(
-			position = 6,
+			position = 1,
+			keyName = "Font",
+			name = "Font Name",
+			description = "Select font name",
+			section = fontSettings
+	)
+	default String font() { return ""; }
+
+	@ConfigItem(
+			position = 2,
 			keyName = "fontSize",
 			name = "Font Size",
 			description = "Sets the font size",
@@ -121,7 +138,25 @@ public interface LocationDisplayConfig extends Config
 	default int fontSize() { return 32; }
 
 	@ConfigItem(
-			position = 7,
+			position = 3,
+			keyName = "bold",
+			name = "Bold",
+			description = "Makes font bold",
+			section = fontSettings
+	)
+	default boolean bold() { return true; }
+
+	@ConfigItem(
+			position = 4,
+			keyName = "italic",
+			name = "Italic",
+			description = "Adds italic to font",
+			section = fontSettings
+	)
+	default boolean italic() { return false; }
+
+	@ConfigItem(
+			position = 5,
 			keyName = "outline",
 			name = "Outline",
 			description = "Outlines the text",
@@ -129,31 +164,9 @@ public interface LocationDisplayConfig extends Config
 	)
 	default boolean outline() { return false; }
 
-	enum FontEnum {
-		Small,
-		Regular,
-		Bold
-	}
 
 	@ConfigItem(
-			position = 8,
-			keyName = "Font",
-			name = "Font Style",
-			description = "Select font style",
-			section = fontSettings
-	)
-	default FontEnum font() { return FontEnum.Bold; }
-
-	@ConfigItem(
-			position = 50,
-			keyName = "suppressOnLogin",
-			name = "Suppress on Login",
-			description = "Prevents location name from showing immediately after login"
-	)
-	default boolean suppressOnLogin() { return false; }
-
-	@ConfigItem(
-			position = 10,
+			position = 6,
 			keyName = "Color",
 			name = "Text Color",
 			description = "Select the color of the text",
@@ -199,23 +212,6 @@ public interface LocationDisplayConfig extends Config
 	default int underlineHeight() { return -2; }
 
 	@ConfigItem(
-			position = 25,
-			keyName = "italic",
-			name = "Italic",
-			description = "Adds italic to font",
-			section = fontSettings
-	)
-	default boolean italic() { return false; }
-
-	@ConfigItem(
-			position = 30,
-			keyName = "Prefix/Suffix",
-			name = "Prefix/Suffix",
-			description = "Adds a prefix and suffix to the name"
-	)
-	default String prefixSuffix() { return ""; }
-
-	@ConfigItem(
 			position = 32,
 			keyName = "soundEffect",
 			name = "Sound Effect",
@@ -241,5 +237,31 @@ public interface LocationDisplayConfig extends Config
 			section = soundEffectSettings
 	)
 	default int soundEffectCooldown() { return 5000; }
+
+	@ConfigItem(
+			position = 30,
+			keyName = "Prefix",
+			name = "Prefix",
+			description = "Adds a prefix to the name",
+			section = prefixSuffixSettings
+	)
+	default String prefix() { return ""; }
+
+	@ConfigItem(
+			position = 31,
+			keyName = "Suffix",
+			name = "Suffix",
+			description = "Adds a suffix to the name",
+			section = prefixSuffixSettings
+	)
+	default String suffix() { return ""; }
+
+	@ConfigItem(
+			position = 50,
+			keyName = "suppressOnLogin",
+			name = "Suppress on Login",
+			description = "Prevents location name from showing immediately after login"
+	)
+	default boolean suppressOnLogin() { return false; }
 
 }

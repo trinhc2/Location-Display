@@ -22,7 +22,6 @@ public class LocationDisplayOverlay extends Overlay {
     private boolean suppressFirstLocation;
     private enum FadeState { IDLE, FADING_IN, HOLDING, FADING_OUT }
     private FadeState fadeState = FadeState.IDLE;
-    private static final long SOUND_COOLDOWN_MS = 5000; // 5 seconds cooldown
     private long lastSoundTime = 0;
 
 
@@ -35,25 +34,33 @@ public class LocationDisplayOverlay extends Overlay {
     }
 
     private Font getFontFromConfig() {
-        Font baseFont;
 
-        switch (config.font()) {
-            case Regular:
-                baseFont = FontManager.getRunescapeFont();
-                break;
-            case Bold:
+        if (config.font().isEmpty()) {
+            Font baseFont = FontManager.getRunescapeFont();
+
+            if (config.bold()) {
                 baseFont = FontManager.getRunescapeBoldFont();
-                break;
-            case Small:
-                baseFont = FontManager.getRunescapeSmallFont();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + config.font());
+            }
+
+            int style = baseFont.getStyle();
+
+            if (config.italic()) {
+                style |= Font.ITALIC;
+            }
+
+            return baseFont.deriveFont(style, (float) config.fontSize());
         }
 
+        Font baseFont = new Font(config.font(), Font.PLAIN,config.fontSize());
+
         int style = baseFont.getStyle();
+
         if (config.italic()) {
             style |= Font.ITALIC;
+        }
+
+        if (config.bold()) {
+            style |= Font.BOLD;
         }
 
         return baseFont.deriveFont(style, (float) config.fontSize());
@@ -113,7 +120,7 @@ public class LocationDisplayOverlay extends Overlay {
         if (config.soundEffect()){
             long currentTime = System.currentTimeMillis();
 
-            if (currentTime - lastSoundTime >= SOUND_COOLDOWN_MS) {
+            if (currentTime - lastSoundTime >= config.soundEffectCooldown()) {
                 client.playSoundEffect(config.soundEffectID());
                 lastSoundTime = currentTime;
             }
@@ -126,8 +133,7 @@ public class LocationDisplayOverlay extends Overlay {
 
         if (!currentArea.equals(lastArea) && !currentArea.equals("Unknown Area")) {
             lastArea = currentArea;
-            String suffix = new StringBuilder(config.prefixSuffix()).reverse().toString();
-            displayedArea = config.prefixSuffix() + lastArea + suffix;
+            displayedArea = config.prefix() + lastArea + config.suffix();
 
             fadeStartTime = System.currentTimeMillis();
             fadeState = FadeState.FADING_IN;
