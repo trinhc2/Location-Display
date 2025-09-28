@@ -93,41 +93,46 @@ public class LocationDisplayOverlay extends Overlay {
         }
     }
 
-    private void drawUnderline(Graphics2D graphics, Font font, Color fadeColor, Point position){
-        FontMetrics metrics = graphics.getFontMetrics(font);
-        int textWidth = metrics.stringWidth(displayedArea);
+    private void drawUnderlineIfNeeded(Graphics2D graphics, Font font, Color fadeColor, Point position){
+        if (config.underline()) {
+            FontMetrics metrics = graphics.getFontMetrics(font);
+            int textWidth = metrics.stringWidth(displayedArea);
 
-        graphics.setColor(fadeColor);
+            graphics.setColor(fadeColor);
 
-        Stroke originalStroke = graphics.getStroke();
-        graphics.setStroke(new BasicStroke((float) config.underlineThickness()));
+            Stroke originalStroke = graphics.getStroke();
+            graphics.setStroke(new BasicStroke((float) config.underlineThickness()));
 
-        graphics.drawLine(position.x - config.underlineWidth(), position.y + config.underlineHeight(), position.x + textWidth + config.underlineWidth(), position.y + config.underlineHeight());
+            graphics.drawLine(position.x - config.underlineWidth(), position.y + config.underlineHeight(), position.x + textWidth + config.underlineWidth(), position.y + config.underlineHeight());
 
-        graphics.setStroke(originalStroke);
+            graphics.setStroke(originalStroke);
+        }
+    }
+
+    private void playSoundEffectIfNeeded() {
+        if (config.soundEffect()){
+            long currentTime = System.currentTimeMillis();
+
+            if (currentTime - lastSoundTime >= SOUND_COOLDOWN_MS) {
+                client.playSoundEffect(config.soundEffectID());
+                lastSoundTime = currentTime;
+            }
+        }
     }
 
     @Override
     public Dimension render(Graphics2D graphics) {
         String currentArea = plugin.getCurrentArea();
 
-        if (!currentArea.equals(lastArea)) {
+        if (!currentArea.equals(lastArea) && !currentArea.equals("Unknown Area")) {
             lastArea = currentArea;
-            if (!lastArea.equals("Unknown Area")) {
-                String suffix = new StringBuilder(config.prefixSuffix()).reverse().toString();
-                displayedArea = config.prefixSuffix() + lastArea + suffix;
-                fadeStartTime = System.currentTimeMillis();
-                fadeState = FadeState.FADING_IN;
+            String suffix = new StringBuilder(config.prefixSuffix()).reverse().toString();
+            displayedArea = config.prefixSuffix() + lastArea + suffix;
 
-                if (config.soundEffect()){
-                    long currentTime = System.currentTimeMillis();
+            fadeStartTime = System.currentTimeMillis();
+            fadeState = FadeState.FADING_IN;
 
-                    if (currentTime - lastSoundTime >= SOUND_COOLDOWN_MS) {
-                        client.playSoundEffect(config.soundEffectID());
-                        lastSoundTime = currentTime;
-                    }
-                }
-            }
+            playSoundEffectIfNeeded();
         }
 
         // Skip everything if not fading
@@ -186,9 +191,7 @@ public class LocationDisplayOverlay extends Overlay {
 
         textComponent.setText(displayedArea);
 
-        if (config.underline()){
-            drawUnderline(graphics, font, fadeColor, textPosition);
-        }
+        drawUnderlineIfNeeded(graphics, font, fadeColor, textPosition);
 
         // Included because runelite doesn't render 0 alpha completely, 0 alpha will still leave text
         Composite originalComposite = graphics.getComposite();
