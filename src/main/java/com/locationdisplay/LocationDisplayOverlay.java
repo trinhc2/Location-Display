@@ -1,5 +1,6 @@
 package com.locationdisplay;
 
+import net.runelite.api.Preferences;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.api.Client;
@@ -14,6 +15,7 @@ public class LocationDisplayOverlay extends Overlay {
     private final Client client;
     private final LocationDisplayConfig config;
     private final LocationDisplayPlugin plugin;
+    private final SoundEngine soundEngine; // Injected as an instance
     private final TextComponent textComponent = new TextComponent();
     private long fadeStartTime = 0;
     private float alpha = 0f;
@@ -26,11 +28,12 @@ public class LocationDisplayOverlay extends Overlay {
 
 
     @Inject
-    private LocationDisplayOverlay(Client client, LocationDisplayPlugin plugin, LocationDisplayConfig config) {
+    private LocationDisplayOverlay(Client client, LocationDisplayPlugin plugin, LocationDisplayConfig config, SoundEngine soundEngine) {
         this.client = client;
         this.plugin = plugin;
         this.config = config;
         this.suppressFirstLocation = config.suppressOnLogin();
+        this.soundEngine = soundEngine;
     }
 
     private Font getFontFromConfig() {
@@ -117,13 +120,28 @@ public class LocationDisplayOverlay extends Overlay {
     }
 
     private void playSoundEffectIfNeeded() {
-        if (config.soundEffect()){
-            long currentTime = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
+        switch (config.soundEffect()){
+            case SOUND_EFFECT:
+                Preferences preferences = client.getPreferences();
+                int previousVolume = preferences.getSoundEffectVolume();
 
-            if (currentTime - lastSoundTime >= config.soundEffectCooldown()) {
-                client.playSoundEffect(config.soundEffectID());
-                lastSoundTime = currentTime;
-            }
+                if (currentTime - lastSoundTime >= config.soundEffectCooldown()) {
+                    int scaledVolume = (int) ((config.soundEffectVolume() / 100.0) * 127);
+                    preferences.setSoundEffectVolume(scaledVolume);
+                    client.playSoundEffect(config.soundEffectID(), scaledVolume);
+                    preferences.setSoundEffectVolume(previousVolume);
+                    lastSoundTime = currentTime;
+                }
+                break;
+            case CUSTOM:
+                if (currentTime - lastSoundTime >= config.soundEffectCooldown()) {
+                    soundEngine.playCustomSound();
+                    lastSoundTime = currentTime;
+                }
+                break;
+            default:
+                return;
         }
     }
 

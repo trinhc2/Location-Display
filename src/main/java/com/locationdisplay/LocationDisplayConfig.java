@@ -57,8 +57,8 @@ public interface LocationDisplayConfig extends Config
 	String underlineSettings = "underlineSettings";
 
 	@ConfigSection(
-			name = "Sound Effect Settings",
-			description = "Settings relating to sound effects",
+			name = "Sound Settings",
+			description = "Settings relating to sounds",
 			position = 10,
 			closedByDefault = true
 	)
@@ -211,17 +211,40 @@ public interface LocationDisplayConfig extends Config
 	)
 	default int underlineHeight() { return -2; }
 
+	@AllArgsConstructor
+	enum SoundOptionEnum {
+		NONE("None"),
+		SOUND_EFFECT("Sound Effect"),
+		CUSTOM("Custom");
+
+		private final String name;
+
+		@Override
+		public String toString() {
+			return name;
+		}
+	}
 	@ConfigItem(
 			position = 32,
 			keyName = "soundEffect",
-			name = "Sound Effect",
-			description = "Plays a sound effect aswell",
+			name = "Sound",
+			description = "Plays a sound when location appears. See github page for custom sounds!",
 			section = soundEffectSettings
 	)
-	default boolean soundEffect() { return false; }
+	default SoundOptionEnum soundEffect() { return SoundOptionEnum.NONE; }
 
+	@Range(max = 100)
 	@ConfigItem(
 			position = 33,
+			keyName = "soundVolume",
+			name = "Sound Volume",
+			description = "Modify volume of sound",
+			section = soundEffectSettings
+	)
+	default int soundEffectVolume() { return 50; }
+
+	@ConfigItem(
+			position = 37,
 			keyName = "effectid",
 			name = "Sound Effect ID",
 			description = "Change sound effect, check out: https://oldschool.runescape.wiki/w/List_of_sound_IDs",
@@ -230,7 +253,7 @@ public interface LocationDisplayConfig extends Config
 	default int soundEffectID() { return 4218; }
 
 	@ConfigItem(
-			position = 34,
+			position = 40,
 			keyName = "soundCooldown",
 			name = "Sound Effect Cooldown (ms)",
 			description = "Set the cooldown before playing the sound effect again",

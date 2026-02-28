@@ -34,6 +34,9 @@ public class LocationDisplayPlugin extends Plugin
 	@Inject
 	private LocationDisplayOverlay overlay;
 
+	@Inject
+	private SoundEngine soundEngine; // Injected as an instance
+
 	@Getter
 	@Setter
 	private String currentArea = "";
@@ -50,6 +53,7 @@ public class LocationDisplayPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		regionMap.loadFromJson();
+		soundEngine.ensureDownloadDirectoryExists();
 	}
 
 	@Override
@@ -68,7 +72,7 @@ public class LocationDisplayPlugin extends Plugin
 			playerRegion.setY(currentY);
 			setCurrentArea(regionMap.getAreaName(playerRegion));
 
-			//log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
+			log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
 		}
 	}
 
