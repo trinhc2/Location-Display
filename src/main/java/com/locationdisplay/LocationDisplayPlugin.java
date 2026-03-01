@@ -72,7 +72,7 @@ public class LocationDisplayPlugin extends Plugin
 			playerRegion.setY(currentY);
 			setCurrentArea(regionMap.getAreaName(playerRegion));
 
-			log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
+			//log.info("Player region changed: Area: {},ID = {}, X = {}, Y = {}", currentArea, playerPosition.getRegionID(), currentX, currentY);
 		}
 	}
 

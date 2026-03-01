@@ -32,10 +32,10 @@ public class SoundEngine {
         try {
             if (!Files.exists(DATA_FOLDER)) {
                 Files.createDirectories(DATA_FOLDER);
-                log.info("folder created at {}", DATA_FOLDER);
+                //log.info("folder created at {}", DATA_FOLDER);
             }
         } catch (FileAlreadyExistsException ignored) {
-            log.info("folder exists at {}", DATA_FOLDER);
+            //log.info("folder exists at {}", DATA_FOLDER);
             /* ignored */
         } catch (IOException e) {
             log.error("Could not create download directory or warning file", e);
