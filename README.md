@@ -15,7 +15,7 @@ Within this `.runelite` folder, there should be a `location-display` folder, whi
 
 ### 2. Prepare your sound files
 
-Make sure your file ia `.wav` format (just changing the extension won't work, actually convert them)
+Make sure your file is a `.wav` format (just changing the extension won't work, actually convert them)
 
 Make sure the file name __exactly__ matches `custom.wav`
 
