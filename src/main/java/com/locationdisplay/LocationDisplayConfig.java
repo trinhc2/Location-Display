@@ -175,6 +175,15 @@ public interface LocationDisplayConfig extends Config
 	default Color colorConfig() { return Color.WHITE; }
 
 	@ConfigItem(
+			position = 7,
+			keyName = "Capitalization",
+			name = "Capitalization",
+			description = "Sets all letters to uppercase/capitals",
+			section = fontSettings
+	)
+	default boolean capitalization() { return false; }
+
+	@ConfigItem(
 			position = 15,
 			keyName = "underline",
 			name = "Underline",

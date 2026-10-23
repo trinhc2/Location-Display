@@ -19,8 +19,8 @@ public class LocationDisplayOverlay extends Overlay {
     private final TextComponent textComponent = new TextComponent();
     private long fadeStartTime = 0;
     private float alpha = 0f;
-    private String lastArea = "";
-    private String displayedArea = null;
+    private String lastArea = null;
+    private String displayedArea = "";
     private boolean suppressFirstLocation;
     private enum FadeState { IDLE, FADING_IN, HOLDING, FADING_OUT }
     private FadeState fadeState = FadeState.IDLE;
@@ -152,6 +152,10 @@ public class LocationDisplayOverlay extends Overlay {
         if (!currentArea.equals(lastArea) && !currentArea.equals("Unknown Area")) {
             lastArea = currentArea;
             displayedArea = config.prefix() + lastArea + config.suffix();
+
+            if (config.capitalization()) {
+                displayedArea = displayedArea.toUpperCase();
+            }
 
             fadeStartTime = System.currentTimeMillis();
             fadeState = FadeState.FADING_IN;
