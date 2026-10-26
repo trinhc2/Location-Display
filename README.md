@@ -3,7 +3,7 @@ The Location Display plugin displays the name of the location you are in upon en
 
 ![Preview](/media/preview.gif)
 
-## Customising your sounds
+## Customizing your sounds
 
 ### 1. Locate your `.runelite` folder
 
@@ -11,7 +11,7 @@ On windows this is likely to be here: `C:\Users\<your username>\.runelite`
 
 If you aren't sure, it's the same place that stores your `settings.properties`
 
-Within this `.runelite` folder, there should be a `location-display` folder, which is where the custom sound should be stored.
+Within this `.runelite` folder, there should be a `location_display` folder, which is where the custom sound should be stored.
 
 ### 2. Prepare your sound files
 
@@ -25,9 +25,14 @@ Check that your file is actually a valid `.wav` and not just a renamed `.mp3` or
 
 Check that the file is named `custom.wav`, if you accidentally used an incorrect file name it won't work.
 
-File path should end up being `C:\Users\<your username>\.runelite\location-display\custom.wav`
+File path should end up being `C:\Users\<your username>\.runelite\location_display\custom.wav`
 
 Check that you have selected `Custom` in the plugin settings under Sound Settings > Sound.
+
+## Customizing Font
+
+Please check out this [issue](https://github.com/trinhc2/Location-Display/issues/17).
+
 ## Help
 If you've experienced an issue with a location or have any recommendations please [create an issue](https://github.com/trinhc2/Location-Display/issues).
 
