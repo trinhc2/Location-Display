@@ -3,13 +3,11 @@ package com.locationdisplay;
 import net.runelite.client.RuneLite;
 
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.audio.AudioPlayer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.client.util.Filepath;
 
 @Slf4j
 @Singleton
@@ -17,8 +15,8 @@ public class SoundEngine {
 
     private final LocationDisplayConfig config;
     private final AudioPlayer audioPlayer;
+    private Filepath filePath;
 
-    private static final Path DATA_FOLDER = Path.of(RuneLite.RUNELITE_DIR.getPath(), "location-display");
     private static final String CUSTOM_SOUND_FILE = "custom.wav";
 
     // Constructor Injection
@@ -28,26 +26,37 @@ public class SoundEngine {
         this.audioPlayer = audioPlayer;
     }
 
+    public void initialize(Filepath filePath) {
+        this.filePath = filePath;
+        ensureDownloadDirectoryExists();
+    }
+
     public void ensureDownloadDirectoryExists() {
+        if (filePath == null) {
+            log.warn("Sound engine has not been initialized");
+            return;
+        }
+
         try {
-            if (!Files.exists(DATA_FOLDER)) {
-                Files.createDirectories(DATA_FOLDER);
-                //log.info("folder created at {}", DATA_FOLDER);
-            }
-        } catch (FileAlreadyExistsException ignored) {
-            //log.info("folder exists at {}", DATA_FOLDER);
-            /* ignored */
-        } catch (IOException e) {
-            log.error("Could not create download directory or warning file", e);
+            filePath.createDirectories();
+        }
+        catch (IOException e) {
+            log.error("Could not create plugin data directory", e);
         }
     }
 
     public void playCustomSound() {
+        if (filePath == null) {
+            log.warn("Cannot play custom sound: sound engine is not initialized");
+            return;
+        }
         float gain = 20f * (float) Math.log10(config.soundEffectVolume()/ 100f);
         try {
-            audioPlayer.play(DATA_FOLDER.resolve(CUSTOM_SOUND_FILE).toFile(), gain);
-        } catch (Exception e) {
-            log.warn("Failed to load sound", e);
+            Filepath soundFile = filePath.join(CUSTOM_SOUND_FILE);
+            audioPlayer.play(soundFile, gain);
+        }
+        catch (Exception e) {
+            log.warn("Failed to load custom sound", e);
         }
     }
 }

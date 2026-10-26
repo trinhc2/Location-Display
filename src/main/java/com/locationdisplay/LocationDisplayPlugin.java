@@ -18,7 +18,11 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 @PluginDescriptor(
 		name = "Location Display",
-		description = "Displays name of the current location upon entering area"
+		description = "Displays name of the current location upon entering area",
+		tags = {"location", "area"},
+		enabledByDefault = true,
+		internalName = "location_display",
+		legacyDataDirectory = "location-display"
 )
 public class LocationDisplayPlugin extends Plugin
 {
@@ -53,7 +57,8 @@ public class LocationDisplayPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		regionMap.loadFromJson();
-		soundEngine.ensureDownloadDirectoryExists();
+		soundEngine.initialize(getPluginDirectory());
+		log.info("folder created at {}", getPluginDirectory().toString());
 	}
 
 	@Override
