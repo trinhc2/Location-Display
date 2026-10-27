@@ -20,7 +20,7 @@ public class RegionMap {
     public void loadFromJson() throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("Locations.json")) {
             if (is == null) {
-                throw new FileNotFoundException("Could not find Locations.json in resources folder.");
+                throw new IllegalStateException("Could not find Locations.json in resources folder.");
             }
 
             try (Reader reader = new InputStreamReader(is)) {
