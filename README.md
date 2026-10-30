@@ -25,7 +25,7 @@ Check that your file is actually a valid `.wav` and not just a renamed `.mp3` or
 
 Check that the file is named `custom.wav`, if you accidentally used an incorrect file name it won't work.
 
-File path should end up being `C:\Users\<your username>\.runelite\location_display\custom.wav`
+File path should end up being `C:\Users\<your username>\.runelite\plugin-data\location-display\custom.wav`
 
 Check that you have selected `Custom` in the plugin settings under Sound Settings > Sound.
 
